@@ -10,6 +10,7 @@ import Navbar from './Components/Navbar';
 import Signin from './Components/Signin';
 import Signup from './Components/Signup';
 import Checkout from './Components/Checkout';
+import Brews from './Components/Brews';
 
 import registerServiceWorker from './registerServiceWorker';
 
@@ -23,6 +24,7 @@ const Root = () => (
 				<Route component={Signin} path='/signin' />
 				<Route component={Signup} path='/signup' />
 				<Route component={Checkout} path='/checkout' />
+				<Route component={Brews} path='/:brandId' />
 			</Switch>
 		</React.Fragment>
 	</Router>
