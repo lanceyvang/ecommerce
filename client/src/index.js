@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'gestalt/dist/gestalt.css';
 
 import App from './Components/App';
-// import Navbar from './Components/Navbar';
+import Navbar from './Components/Navbar';
 import Signin from './Components/Signin';
 import Signup from './Components/Signup';
 import Checkout from './Components/Checkout';
@@ -25,7 +25,7 @@ import registerServiceWorker from './registerServiceWorker';
 const Root = () => (
 	<Router>
 		<React.Fragment>
-			{/* <Navbar /> */}
+			<Navbar />
 			<Switch>
 				{/* Use exact path to not match multiple routes  */}
 				<Route component={App} exact path='/' />
