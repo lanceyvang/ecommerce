@@ -12,4 +12,5 @@ a:visited {
 
 .active {
 	font-style: italic;
+	text-decoration: underline;
 }
