@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Box, Heading, Text, TextField } from 'gestalt';
+import { Container, Box, Heading, TextField, Text } from 'gestalt';
 import ToastMessage from './ToastMessage';
 import { getCart, calculatePrice } from '../Utils';
 
@@ -28,7 +28,6 @@ class Checkout extends React.Component {
 
 		if (this.isFormEmpty(this.state)) {
 			this.showToast('Fill in all fields');
-			return;
 		}
 	};
 
@@ -43,7 +42,6 @@ class Checkout extends React.Component {
 
 	render() {
 		const { toast, toastMessage, cartItems } = this.state;
-
 		return (
 			<Container>
 				<Box
@@ -58,13 +56,14 @@ class Checkout extends React.Component {
 				>
 					{/* Checkout Form Heading */}
 					<Heading color='midnight'>Checkout</Heading>
+					{/* React.Fragment is how we group multiple items without using a DIV */}
 					{cartItems.length > 0 ? (
 						<React.Fragment>
 							{/* User Cart */}
 							<Box
 								display='flex'
 								justifyContent='center'
-								alignItems='center'
+								alignContent='center'
 								direction='column'
 								marginTop={2}
 								marginBottom={6}
@@ -76,8 +75,7 @@ class Checkout extends React.Component {
 									{cartItems.map((item) => (
 										<Box key={item._id} padding={1}>
 											<Text color='midnight'>
-												{item.name} x {item.quantity} - $
-												{item.quantity * item.price}
+												{item.name} X {item.quantity} - ${item.quantity * item.price}
 											</Text>
 										</Box>
 									))}
@@ -87,7 +85,7 @@ class Checkout extends React.Component {
 							{/* Checkout Form */}
 							<form
 								style={{
-									display: 'inlineBlock',
+									display: 'inline',
 									textAlign: 'center',
 									maxWidth: 450
 								}}
@@ -121,7 +119,7 @@ class Checkout extends React.Component {
 								<TextField
 									id='confirmationEmailAddress'
 									type='email'
-									name='confirmationEmailAddress'
+									name='confirmationEmail Adress'
 									placeholder='Confirmation Email Address'
 									onChange={this.handleChange}
 								/>
@@ -131,10 +129,9 @@ class Checkout extends React.Component {
 							</form>
 						</React.Fragment>
 					) : (
-						// Default Text if No Items in Cart
 						<Box color='darkWash' shape='rounded' padding={4}>
 							<Heading align='center' color='watermelon' size='xs'>
-								Your Cart is Empty
+								Your Cart Is Empty
 							</Heading>
 							<Text align='center' italic color='green'>
 								Add some brews!
