@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-// import './index.css';
 import { getToken } from './Utils';
 import 'gestalt/dist/gestalt.css';
 
