@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Box, Heading, TextField, Text } from 'gestalt';
+import { Container, Box, Heading, TextField, Text, Modal, Spinner, Button } from 'gestalt';
 import ToastMessage from './ToastMessage';
 import { getCart, calculatePrice } from '../Utils';
 
@@ -11,7 +11,9 @@ class Checkout extends React.Component {
 		city: '',
 		confirmationEmailAddress: '',
 		toast: false,
-		toastMessage: ''
+		toastMessage: '',
+		orderProcessing: false,
+		modal: false
 	};
 
 	componentDidMount() {
@@ -28,8 +30,13 @@ class Checkout extends React.Component {
 
 		if (this.isFormEmpty(this.state)) {
 			this.showToast('Fill in all fields');
+			return;
 		}
+
+		this.setState({ modal: true });
 	};
+
+	handleSubmitOrder = () => {};
 
 	isFormEmpty = ({ address, postalCode, city, confirmationEmailAddress }) => {
 		return !address || !postalCode || !city || !confirmationEmailAddress;
@@ -40,8 +47,12 @@ class Checkout extends React.Component {
 		setTimeout(() => this.setState({ toast: false, toastMessage: '' }), 5000);
 	};
 
+	closeModal = () => this.setState({ modal: false });
+
 	render() {
-		const { toast, toastMessage, cartItems } = this.state;
+		// prettier-ignore
+		const { toast, toastMessage, cartItems, modal, orderProcessing } = this.state;
+
 		return (
 			<Container>
 				<Box
@@ -56,14 +67,13 @@ class Checkout extends React.Component {
 				>
 					{/* Checkout Form Heading */}
 					<Heading color='midnight'>Checkout</Heading>
-					{/* React.Fragment is how we group multiple items without using a DIV */}
 					{cartItems.length > 0 ? (
 						<React.Fragment>
 							{/* User Cart */}
 							<Box
 								display='flex'
 								justifyContent='center'
-								alignContent='center'
+								alignItems='center'
 								direction='column'
 								marginTop={2}
 								marginBottom={6}
@@ -75,7 +85,8 @@ class Checkout extends React.Component {
 									{cartItems.map((item) => (
 										<Box key={item._id} padding={1}>
 											<Text color='midnight'>
-												{item.name} X {item.quantity} - ${item.quantity * item.price}
+												{item.name} x {item.quantity} - $
+												{item.quantity * item.price}
 											</Text>
 										</Box>
 									))}
@@ -85,7 +96,7 @@ class Checkout extends React.Component {
 							{/* Checkout Form */}
 							<form
 								style={{
-									display: 'inline',
+									display: 'inlineBlock',
 									textAlign: 'center',
 									maxWidth: 450
 								}}
@@ -119,7 +130,7 @@ class Checkout extends React.Component {
 								<TextField
 									id='confirmationEmailAddress'
 									type='email'
-									name='confirmationEmail Adress'
+									name='confirmationEmailAddress'
 									placeholder='Confirmation Email Address'
 									onChange={this.handleChange}
 								/>
@@ -129,9 +140,10 @@ class Checkout extends React.Component {
 							</form>
 						</React.Fragment>
 					) : (
+						// Default Text if No Items in Cart
 						<Box color='darkWash' shape='rounded' padding={4}>
 							<Heading align='center' color='watermelon' size='xs'>
-								Your Cart Is Empty
+								Your Cart is Empty
 							</Heading>
 							<Text align='center' italic color='green'>
 								Add some brews!
@@ -139,10 +151,66 @@ class Checkout extends React.Component {
 						</Box>
 					)}
 				</Box>
+				{/* Confirmation Modal */}
+				{modal && (
+					<ConfirmationModal
+						orderProcessing={orderProcessing}
+						cartItems={cartItems}
+						closeModal={this.closeModal}
+						handleSubmitOrder={this.handleSubmitOrder}
+					/>
+				)}
 				<ToastMessage show={toast} message={toastMessage} />
 			</Container>
 		);
 	}
 }
+
+const ConfirmationModal = ({ orderProcessing, cartItems, closeModal, handleSubmitOrder }) => (
+	<Modal
+		accessibilityCloseLabel='close'
+		accessibilityModalLabel='Confirm Your Order'
+		heading='Confirm Your Order'
+		onDismiss={closeModal}
+		footer={
+			<Box display='flex' marginRight={-1} marginLeft={-1} justifyContent='center'>
+				<Box padding={1}>
+					<Button size='lg' color='red' text='Submit' disabled={orderProcessing} onClick={handleSubmitOrder} />
+				</Box>
+				<Box padding={1}>
+					<Button size='lg' text='Cancel' disabled={orderProcessing} onClick={closeModal} />
+				</Box>
+			</Box>
+		}
+		role='alertdialog'
+		size='sm'
+	>
+		{/* Order Summary */}
+		{!orderProcessing && (
+			<Box display='flex' justifyContent='center' alignItems='center' direction='column' padding={2} color='lightWash'>
+				{cartItems.map((item) => (
+					<Box key={item._id} padding={1}>
+						<Text size='lg' color='red'>
+							{item.name} x {item.quantity} - ${item.quantity * item.price}
+						</Text>
+					</Box>
+				))}
+				<Box paddingY={2}>
+					<Text size='lg' bold>
+						Total: {calculatePrice(cartItems)}
+					</Text>
+				</Box>
+			</Box>
+		)}
+
+		{/* Order Processing Spinner */}
+		<Spinner show={orderProcessing} accessibilityLabel='Order Processing Spinner' />
+		{orderProcessing && (
+			<Text align='center' italic>
+				Submitting Order...
+			</Text>
+		)}
+	</Modal>
+);
 
 export default Checkout;
