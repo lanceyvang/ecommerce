@@ -1,9 +1,11 @@
 import React from 'react';
 import { Container, Box, Heading, TextField, Text, Modal, Spinner, Button } from 'gestalt';
+// prettier-ignore
+import {Elements, StripeProvider, CardElement, injectStripe} from 'react-stripe-elements';
 import ToastMessage from './ToastMessage';
 import { getCart, calculatePrice } from '../Utils';
 
-class Checkout extends React.Component {
+class _CheckoutForm extends React.Component {
 	state = {
 		cartItems: [],
 		address: '',
@@ -134,6 +136,8 @@ class Checkout extends React.Component {
 									placeholder='Confirmation Email Address'
 									onChange={this.handleChange}
 								/>
+								{/* Card Element */}
+								<CardElement id='stripe__input' onReady={(input) => input.focus()} />
 								<button id='stripe__button' type='submit'>
 									Submit
 								</button>
@@ -211,6 +215,16 @@ const ConfirmationModal = ({ orderProcessing, cartItems, closeModal, handleSubmi
 			</Text>
 		)}
 	</Modal>
+);
+
+const CheckoutForm = injectStripe(_CheckoutForm);
+
+const Checkout = () => (
+	<StripeProvider apiKey='pk_test_PctF7fERU8O7x9pGqwdaU71f'>
+		<Elements>
+			<CheckoutForm />
+		</Elements>
+	</StripeProvider>
 );
 
 export default Checkout;
