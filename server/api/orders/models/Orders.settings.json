@@ -1,6 +1,6 @@
 {
   "connection": "default",
-  "collectionName": "",
+  "collectionName": "orders",
   "info": {
     "name": "orders",
     "description": ""
@@ -31,8 +31,7 @@
     },
     "amount": {
       "default": "",
-      "type": "decimal",
-      "required": true
+      "type": "decimal"
     }
   }
 }
