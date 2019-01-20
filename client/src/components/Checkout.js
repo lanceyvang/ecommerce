@@ -43,7 +43,7 @@ class _CheckoutForm extends React.Component {
 	};
 
 	handleSubmitOrder = async () => {
-		const { cartItems, city, address, postalCode } = this.state;
+		const { cartItems, city, address, postalCode, confirmationEmailAddress } = this.state;
 		const amount = calculateAmount(cartItems);
 		console.log(amount, cartItems);
 		// Process order
@@ -59,6 +59,14 @@ class _CheckoutForm extends React.Component {
 				postalCode,
 				address,
 				token
+			});
+			await strapi.request('POST', '/email', {
+				data: {
+					to: confirmationEmailAddress,
+					subject: `Order Confirmation - Ridgewood Beverage Co ${new Date(Date.now())}`,
+					text: 'Your order has been processed',
+					html: '<bold>Expect your order to arrive in 2-3 business days</bold>'
+				}
 			});
 			this.setState({ orderProcessing: false, modal: false });
 			clearCart();
