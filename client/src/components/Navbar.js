@@ -37,9 +37,12 @@ const AuthNav = ({ handleSignout }) => (
 				<Box margin={2} height={50} width={50}>
 					<Image naturalHeight={1} naturalWidth={1} alt='BreHaha Logo' src='./icons/logo.svg' />
 				</Box>
-				<Heading size='xs' color='orange'>
-					BrewHaha
-				</Heading>
+				{/* Title */}
+				<div className='main-title'>
+					<Heading size='xs' color='orange'>
+						Ridgewood Bev. Co.
+					</Heading>
+				</div>
 			</Box>
 		</NavLink>
 
@@ -71,9 +74,11 @@ const UnAuthNav = () => (
 				<Box margin={2} height={50} width={50}>
 					<Image naturalHeight={1} naturalWidth={1} alt='BreHaha Logo' src='./icons/logo.svg' />
 				</Box>
-				<Heading size='xs' color='orange'>
-					BrewHaha
-				</Heading>
+				<div className='main-title'>
+					<Heading size='xs' color='orange'>
+						Ridgewood Bev. Co.
+					</Heading>
+				</div>
 			</Box>
 		</NavLink>
 

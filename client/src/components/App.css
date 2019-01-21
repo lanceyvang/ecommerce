@@ -65,3 +65,11 @@ form input {
 	box-shadow: rgba(50, 50, 93, 0.109804) 0px 4px 6px, rgba(0, 0, 0, 0.0784314) 0px 1px 3px;
 	transition: all 150ms ease;
 }
+
+/* Media Queries */
+
+@media (max-width: 500px) {
+	.main-title {
+		display: none;
+	}
+}
